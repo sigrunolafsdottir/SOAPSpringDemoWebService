@@ -9,6 +9,7 @@ import org.springframework.ws.config.annotation.EnableWs;
 import org.springframework.ws.config.annotation.WsConfigurerAdapter;
 import org.springframework.ws.transport.http.MessageDispatcherServlet;
 import org.springframework.ws.wsdl.wsdl11.DefaultWsdl11Definition;
+import org.springframework.xml.validation.XmlValidator;
 import org.springframework.xml.xsd.SimpleXsdSchema;
 import org.springframework.xml.xsd.XsdSchema;
 import org.springframework.xml.xsd.XsdSchemaCollection;
@@ -32,31 +33,39 @@ public class WebServiceConfig extends WsConfigurerAdapter {
         wsdl11Definition.setPortTypeName("CountriesPort");
         wsdl11Definition.setLocationUri("/ws");
         wsdl11Definition.setTargetNamespace("http://spring.io/guides/gs-producing-web-service");
- //       wsdl11Definition.setSchemaCollection(getXsds());
-        wsdl11Definition.setSchema(countriesSchema);
+        wsdl11Definition.setSchemaCollection(getXsdCollection());
+ //       wsdl11Definition.setSchema(countriesSchema);
         return wsdl11Definition;
     }
-/*
+
+
     @Bean
-    public XsdSchemaCollection getXsds() throws Exception {
-        CommonsXsdSchemaCollection xsds = new CommonsXsdSchemaCollection(new ClassPathResource("friends.xsd"),
-                new ClassPathResource("/countries.xsd"));
-        xsds.setInline(true);
-        return xsds;
+    public XsdSchemaCollection getXsdCollection() {
+
+        return new XsdSchemaCollection() {
+
+            @Override
+            public XmlValidator createValidator() {
+                return null;
+            }
+
+            @Override
+            public XsdSchema[] getXsdSchemas() {
+                return new XsdSchema[]{countriesSchema(), friendsSchema()};
+            }
+        };
     }
-*/
 
     @Bean
     public XsdSchema countriesSchema() {
-
         return new SimpleXsdSchema(new ClassPathResource("countries.xsd"));
     }
-/*
+
     @Bean
     public XsdSchema friendsSchema() {
 
         return new SimpleXsdSchema(new ClassPathResource("friends.xsd"));
     }
-    */
+
 
 }
