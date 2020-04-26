@@ -61,6 +61,7 @@
             <version>2.3.0-b170127.1453</version>
         </dependency>
 
+
     </dependencies>
 
     <build>
@@ -84,6 +85,7 @@
                 <configuration>
                     <sources>
                         <source>${project.basedir}/src/main/resources/countries.xsd</source>
+                        <source>${project.basedir}/src/main/resources/friends.xsd</source>
                     </sources>
                 </configuration>
             </plugin>
